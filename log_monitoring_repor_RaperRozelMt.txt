@@ -1,0 +1,136 @@
+ACTIVITY #9: SOC LOG MONITORING & THREAT DETECTION
+SOC Analyst Investigation Report
+
+Name: Rozel M. Raper
+Cyber Handle: CyberNova
+
+LOG FILE ANALYZED:
+auth.log
+
+INVESTIGATION COMMANDS AND RESULTS:
+
+1. Command:
+ls
+
+Result:
+auth.log
+
+
+2. Command:
+cat auth.log
+
+Result:
+Authentication log reviewed.
+
+3. Command:
+tail -n 3 auth.log
+
+Result:
+Displayed the last 3 activities and identified the final successful login from 203.0.113.50.
+
+
+4. Command:
+head -n 3 auth.log
+
+Result:
+Displayed the first 3 activities.
+
+
+5. Command:
+grep "Failed password" auth.log
+
+Result:
+Displayed all failed login attempts.
+
+
+6. Command:
+grep "Failed password" auth.log | wc -l
+
+Result:
+10
+
+Total failed login attempts: 10
+
+
+7. Command:
+grep "Failed password" auth.log | awk '{print $11}'
+
+Result:
+192.168.1.10
+192.168.1.10
+192.168.1.10
+10.0.0.5
+10.0.0.5
+10.0.0.5
+203.0.113.50
+203.0.113.50
+203.0.113.50
+203.0.113.50
+
+
+8. Command:
+grep "Failed password" auth.log | awk '{print $11}' | sort | uniq -c
+
+Result:
+3 192.168.1.10
+3 10.0.0.5
+4 203.0.113.50
+
+
+9. Command:
+grep "Failed password" auth.log | awk '{print $11}' | sort | uniq -c | sort -nr
+
+Result:
+4 203.0.113.50
+3 192.168.1.10
+3 10.0.0.5
+
+
+10. Command:
+grep "Failed password" auth.log | awk '{print $11}' | sort | uniq -c | awk '$1 > 3'
+
+Result:
+4 203.0.113.50
+
+Possible brute-force attacker:
+203.0.113.50
+
+
+11. Command:
+grep "Accepted password" auth.log
+
+Result:
+Successful login entries identified.
+
+
+12. Command:
+grep "Accepted password" auth.log | awk '{print $11}'
+
+Result:
+192.168.1.5
+203.0.113.50
+
+
+SUMMARY:
+
+Total failed login attempts: 10
+
+Unique attacker IPs:
+192.168.1.10
+10.0.0.5
+203.0.113.50
+
+Top attacker IP:
+203.0.113.50
+
+Top attacker failed attempts:
+4
+
+Successful attacker IP:
+203.0.113.50
+
+Hidden flag found:
+FLAG{entry_point_identified}
+
+Final flag:
+flag{203.0.113.50-10-203.0.113.50}
